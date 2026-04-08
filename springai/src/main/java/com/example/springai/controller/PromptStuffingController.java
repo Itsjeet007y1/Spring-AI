@@ -1,6 +1,7 @@
 package com.example.springai.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,11 @@ public class PromptStuffingController {
     public String chat(@RequestParam("message") String message) {
         return chatClient
                 .prompt()
+                .options(OpenAiChatOptions.builder()
+                        .model("gpt-3.5-turbo")
+                        .maxTokens(10)
+                        .temperature(0.7)
+                        .build())
                 .system(systemPromptTemplate)
                 .user(message)
                 .call().content();
