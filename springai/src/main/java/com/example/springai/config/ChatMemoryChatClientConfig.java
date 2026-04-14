@@ -1,5 +1,6 @@
 package com.example.springai.config;
 
+import com.example.springai.advisors.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
@@ -19,10 +20,12 @@ public class ChatMemoryChatClientConfig {
 
         Advisor advisor = new SimpleLoggerAdvisor();
 
+        Advisor tokenUsageAdvisor = new TokenUsageAuditAdvisor();
+
         Advisor memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
 
         return chatClientBuilder
-                .defaultAdvisors(List.of(advisor, memoryAdvisor))
+                .defaultAdvisors(List.of(advisor, memoryAdvisor, tokenUsageAdvisor))
                 .build();
     }
 }
